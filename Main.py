@@ -8,13 +8,28 @@ def verificaSeNaoHaNadaNaPasta(diretorio):
         exit()
 
 
-def calculaPorcentagem(qntdArquivos, lidos):
-    conta = (lidos / qntdArquivos) * 10000
-    print(str(conta.__round__() / 100) + '%')
+def contagemDeArquivos(diretorio_origem):
+    lista = os.listdir(diretorio_origem)
+    arquivos = 0
+    pastas = 0
+    for daVez in lista:
+        if os.path.isfile(os.path.join(diretorio_origem, daVez)):
+            arquivos = arquivos + 1
+        else:
+            pastas = pastas + 1
 
+    print('São ' + str(arquivos) + ' arquivos.')
+    print('São ' + str(pastas) + ' pastas.')
+
+    return arquivos + pastas
+
+
+def criaPastaSeNaoExiste(diretorio):
+    if not os.path.exists(diretorio):
+        print('Criando diretório')
+        os.mkdir(diretorio)
 
 def moverArquivos(diretorio_origem, diretorio_destino, qntdArquivos):
-
     lidos = 0
     listaArquivos = os.listdir(diretorio_origem)
     for nome_do_arquivo in listaArquivos:
@@ -42,33 +57,14 @@ def moverArquivos(diretorio_origem, diretorio_destino, qntdArquivos):
 
     print('Concluído.')
 
-
-def criaPastaSeNaoExiste(diretorio):
-    if not os.path.exists(diretorio):
-        print('Criando diretório')
-        os.mkdir(diretorio)
-
+def calculaPorcentagem(qntdArquivos, lidos):
+    conta = (lidos / qntdArquivos) * 10000
+    print(str(conta.__round__() / 100) + '%')
 
 def pastaTemMesmoNome(origem, destino):
     nome_pasta_origem = os.path.basename(origem)
     nome_pasta_destino = os.path.basename(destino)
     return nome_pasta_origem == nome_pasta_destino
-
-
-def contagemDeArquivos(diretorio_origem):
-    lista = os.listdir(diretorio_origem)
-    arquivos = 0
-    pastas = 0
-    for daVez in lista:
-        if os.path.isfile(os.path.join(diretorio_origem, daVez)):
-            arquivos = arquivos + 1
-        else:
-            pastas = pastas + 1
-
-    print('São ' + str(arquivos) + ' arquivos.')
-    print('São ' + str(pastas) + ' pastas.')
-
-    return arquivos + pastas
 
 
 if __name__ == '__main__':
