@@ -2,13 +2,33 @@ import os
 import shutil
 
 
+def verificaSeNaoHaNadaNaPasta(diretorio):
+    if len(os.listdir(diretorio)) == 0:
+        print('Não há nada da pasta.')
+        exit()
+
+
+def calculaPorcentagem(qntdArquivos, lidos):
+    conta = (lidos / qntdArquivos) * 10000
+    print(str(conta.__round__() / 100) + '%')
+
+
 def moverArquivos(diretorio_origem, diretorio_destino):
-    criaPastaSeNaoExiste(diretorio_destino)
     print('Acessando pasta.')
     print('Contando arquivos')
-    contagemDeArquivos(diretorio_origem)
+    verificaSeNaoHaNadaNaPasta(diretorio_origem)
+    qntdArquivos = contagemDeArquivos(diretorio_origem)
 
-    for nome_do_arquivo in os.listdir(diretorio_origem):
+    lidos = 0
+    criaPastaSeNaoExiste(diretorio_destino)
+    listaArquivos = os.listdir(diretorio_origem)
+    for nome_do_arquivo in listaArquivos:
+        if len(listaArquivos) == 1 and nome_do_arquivo == os.path.basename(diretorio_destino):
+            print('Só há a pasta de organizados.')
+            exit()
+
+        calculaPorcentagem(qntdArquivos, lidos)
+
         origem = os.path.join(diretorio_origem, nome_do_arquivo)
 
         if os.path.isfile(origem):
@@ -17,14 +37,20 @@ def moverArquivos(diretorio_origem, diretorio_destino):
             print('Vai para a pasta: ' + destino)
             criaPastaSeNaoExiste(destino)
             shutil.move(origem, destino)
+            lidos = lidos + 1
+
         elif os.path.isdir(origem) and not pastaTemMesmoNome(origem, diretorio_destino):
             destino = os.path.join(diretorio_destino, 'Pastas')
             print('Vai para a pasta: ' + destino)
             shutil.move(origem, destino)
+            lidos = lidos + 1
+
+    print('Concluído.')
 
 
 def criaPastaSeNaoExiste(diretorio):
     if not os.path.exists(diretorio):
+        print('Criando diretório')
         os.mkdir(diretorio)
 
 
@@ -47,9 +73,10 @@ def contagemDeArquivos(diretorio_origem):
     print('São ' + str(arquivos) + ' arquivos.')
     print('São ' + str(pastas) + ' pastas.')
 
+    return arquivos + pastas
+
 
 if __name__ == '__main__':
     pastaOrigem = '/home/leonam/Downloads'
     pastaDestino = '/home/leonam/Downloads/Organizados'
-
     moverArquivos(pastaOrigem, pastaDestino)
