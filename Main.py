@@ -13,14 +13,9 @@ def calculaPorcentagem(qntdArquivos, lidos):
     print(str(conta.__round__() / 100) + '%')
 
 
-def moverArquivos(diretorio_origem, diretorio_destino):
-    print('Acessando pasta.')
-    print('Contando arquivos')
-    verificaSeNaoHaNadaNaPasta(diretorio_origem)
-    qntdArquivos = contagemDeArquivos(diretorio_origem)
+def moverArquivos(diretorio_origem, diretorio_destino, qntdArquivos):
 
     lidos = 0
-    criaPastaSeNaoExiste(diretorio_destino)
     listaArquivos = os.listdir(diretorio_origem)
     for nome_do_arquivo in listaArquivos:
         if len(listaArquivos) == 1 and nome_do_arquivo == os.path.basename(diretorio_destino):
@@ -77,6 +72,13 @@ def contagemDeArquivos(diretorio_origem):
 
 
 if __name__ == '__main__':
-    pastaOrigem = '/home/leonam/Downloads'
-    pastaDestino = '/home/leonam/Downloads/Organizados'
-    moverArquivos(pastaOrigem, pastaDestino)
+    diretorio_origem = '/home/leonam/Downloads'
+    diretorio_destino = '/home/leonam/Downloads/Organizados'
+
+    print('Acessando pasta.')
+    print('Contando arquivos')
+    verificaSeNaoHaNadaNaPasta(diretorio_origem)
+    qntdArquivos = contagemDeArquivos(diretorio_origem)
+    criaPastaSeNaoExiste(diretorio_destino)
+
+    moverArquivos(diretorio_origem, diretorio_destino, qntdArquivos)
